@@ -1,5 +1,5 @@
 # rails_magic
-Workshop on Meta-programming and Active Record
+Workshop on Meta-programming and Active Record. If you're interested in learning more Metaprogramming Ruby is an excellent resource https://github.com/dazhizhang/ruby-rails/blob/master/Metaprogramming%20Ruby%2C%202nd%20Edition.pdf 
 
 # Setup
 
