@@ -16,3 +16,5 @@ Workshop on Meta-programming and Active Record. If you're interested in learning
 ### If you like, implement the dynamic #find_by_x methods as well.
 
 ### Before/After callbacks were implemented in early versions of rails by leveraging alias_method to add behavior before and after e.g. #save. Try to implement this.
+
+### Any features you've always wondered about? Take at crack at them now!
