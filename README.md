@@ -17,4 +17,4 @@ Workshop on Meta-programming and Active Record. If you're interested in learning
 
 ### Before/After callbacks were implemented in early versions of rails by leveraging alias_method to add behavior before and after e.g. #save. Try to implement this.
 
-### Any features you've always wondered about? Take at crack at them now!
+### Any features you've always wondered about? Take at crack at them now! Ideas: `.validates`, model generators, "Did you mean?" messages for NoMethod errors.
