@@ -42,6 +42,19 @@ class Record
     end
   end
 
+
+  def respond_to_missing(method_name)
+    self.class.column_names.include? method_name.to_s
+  end
+
+  def method_missing(method_name)
+    if self.class.column_names.include? method_name.to_s
+      @attributes[method_name.to_s]
+    else
+      super
+    end
+  end
+
   private
 
   def self.load_row_from_id(id)
