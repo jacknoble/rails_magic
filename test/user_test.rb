@@ -13,5 +13,10 @@ class UserTest < Test::Unit::TestCase
     user = User.new({"email" => "pete@doximity.com"})
     assert_equal user.email, "pete@doximity.com"
   end
+
+  def test_no_method
+    user = User.new({"name" => "Pete"})
+    user.blah
+  end
 end
 
