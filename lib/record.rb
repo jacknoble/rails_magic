@@ -70,7 +70,10 @@ class Record
   def insert_to_db
     fields = @attributes.keys.join(",")
     placeholders = (Array("?") * @attributes.count).join(",")
+
     db.execute("insert into #{table_name} (#{fields}) VALUES (#{placeholders})", @attributes.values)
+
+    # Update attributes with the new id
     last_id = db.execute("SELECT last_insert_rowid()")[0][0]
     row = self.class.load_row_from_id(last_id)
     set_attributes(row)
