@@ -13,6 +13,10 @@ class Record
     rows.map { |r| new(r) }
   end
 
+  def self.find(id)
+    new(load_row_from_id(id))
+  end
+
   def self.db
     @db ||= SQLite3::Database.new 'rails_magic.db'
   end
@@ -25,6 +29,60 @@ class Record
   end
 
   def initialize(row)
-    @attributes = self.class.column_names.zip(row).to_h
+    set_attributes(row)
+  end
+
+  attr_accessor :attributes
+
+  def save
+    if @attributes["id"]
+      row = update_to_db
+    else
+      row = insert_to_db
+    end
+  end
+
+  private
+
+  def self.load_row_from_id(id)
+    db.execute("select * from #{table_name} where id = ?", id).first
+  end
+
+  def set_attributes(row)
+    case row
+    when Array
+      @attributes = self.class.column_names.zip(row).to_h
+    when Hash
+      @attributes = row
+    else
+      raise "Argument to Record#new must be array of values or attribute hash"
+    end
+  end
+
+  def table_name
+    self.class.table_name
+  end
+
+  def db
+    self.class.db
+  end
+
+  def insert_to_db
+    fields = @attributes.keys.join(",")
+    placeholders = (Array("?") * @attributes.count).join(",")
+    db.execute("insert into #{table_name} (#{fields}) VALUES (#{placeholders})", @attributes.values)
+    last_id = db.execute("SELECT last_insert_rowid()")[0][0]
+    row = self.class.load_row_from_id(last_id)
+    set_attributes(row)
+  end
+
+  def update_to_db
+    fields_to_set = @attributes.keys.reject { |f| f == "id" }
+    set_sql = fields_to_set.map do |f|
+      "#{f} = ?"
+    end.join(",")
+
+    args = fields_to_set << attributes["id"]
+    self.class.db.execute("update #{table_name} set #{set_sql} where id = ?", *args)
   end
 end
